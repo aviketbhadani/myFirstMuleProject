@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="ef8894c7-725e-452b-a6de-d891ebaca733" >
+		<http:listener-connection host="0.0.0.0" port="${http.port}" />
+	</http:listener-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="66fb9bb2-3aeb-4e44-9b1e-43981122c27f" file="config.yaml" />
+	<flow name="practiseFlow" doc:id="04eb3a19-11ec-432e-8b00-a2169c52186e" >
+		<http:listener doc:name="Listener" doc:id="bad27797-dbb8-4253-ba79-a6cad4b783aa" config-ref="HTTP_Listener_config" path="/run"/>
+		<flow-ref doc:name="Flow Reference" doc:id="95f57f1b-22cc-49b9-a7f3-8165d79b21a0" name="subflow"/>
+	</flow>
+	<sub-flow name="subflow" doc:id="6da5d3ac-98a9-451a-8ec2-ff94170af4b9" >
+		<ee:transform doc:name="Transform Message" doc:id="dca1d923-f5b7-4984-8e07-62e71e38b83b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA["sucess"]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="name" ><![CDATA[attributes.queryParams.name]]></ee:set-variable>
+				<ee:set-variable variableName="method" ><![CDATA[attributes.method]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+	</sub-flow>
+</mule>
